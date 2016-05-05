@@ -1,4 +1,4 @@
-Gogs - Go Git Service [![Build Status](https://travis-ci.org/gogits/gogs.svg?branch=master)](https://travis-ci.org/gogits/gogs)
+Gogs - Go Git Service [![Build Status](https://travis-ci.org/gigforks/gogs.svg?branch=master)](https://travis-ci.org/gigforks/gogs)
 =====================
 
 Gogs (Go Git Service) 是一款极易搭建的自助 Git 服务。
@@ -51,7 +51,7 @@ Gogs 的目标是打造一个最简单、最快速和最轻松的方式搭建自
 - [二进制安装](http://gogs.io/docs/installation/install_from_binary.html)
 - [源码安装](http://gogs.io/docs/installation/install_from_source.html)
 - [包管理安装](http://gogs.io/docs/installation/install_from_packages.html)
-- [采用 Docker 部署](https://github.com/gogits/gogs/tree/master/docker)
+- [采用 Docker 部署](https://github.com/gigforks/gogs/tree/master/docker)
 - [通过 Vagrant 安装](https://github.com/geerlingguy/ansible-vagrant-examples/tree/master/gogs)
 
 ### 使用教程
@@ -95,9 +95,9 @@ Gogs 的目标是打造一个最简单、最快速和最轻松的方式搭建自
 ## 贡献成员
 
 - 前团队成员 [@lunny](https://github.com/lunny)、[@fuxiaohei](https://github.com/fuxiaohei) 和 [@slene](https://github.com/slene)。
-- 您可以通过查看 [贡献者页面](https://github.com/gogits/gogs/graphs/contributors) 获取完整的贡献者列表。
+- 您可以通过查看 [贡献者页面](https://github.com/gigforks/gogs/graphs/contributors) 获取完整的贡献者列表。
 - 您可以通过查看 [TRANSLATORS](conf/locale/TRANSLATORS) 文件获取公开的翻译人员列表。
 
 ## 授权许可
 
-本项目采用 MIT 开源授权许可证，完整的授权说明已放置在 [LICENSE](https://github.com/gogits/gogs/blob/master/LICENSE) 文件中。
+本项目采用 MIT 开源授权许可证，完整的授权说明已放置在 [LICENSE](https://github.com/gigforks/gogs/blob/master/LICENSE) 文件中。

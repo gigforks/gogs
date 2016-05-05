@@ -5,13 +5,13 @@
 package user
 
 import (
-	api "github.com/gogits/go-gogs-client"
+	api "github.com/gigforks/go-gogs-client"
 
-	"github.com/gogits/gogs/models"
-	"github.com/gogits/gogs/modules/middleware"
+	"github.com/gigforks/gogs/models"
+	"github.com/gigforks/gogs/modules/middleware"
 )
 
-// https://github.com/gogits/go-gogs-client/wiki/Users#list-access-tokens-for-a-user
+// https://github.com/gigforks/go-gogs-client/wiki/Users#list-access-tokens-for-a-user
 func ListAccessTokens(ctx *middleware.Context) {
 	tokens, err := models.ListAccessTokens(ctx.User.Id)
 	if err != nil {
@@ -26,7 +26,7 @@ func ListAccessTokens(ctx *middleware.Context) {
 	ctx.JSON(200, &apiTokens)
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Users#create-a-access-token
+// https://github.com/gigforks/go-gogs-client/wiki/Users#create-a-access-token
 func CreateAccessToken(ctx *middleware.Context, form api.CreateAccessTokenOption) {
 	t := &models.AccessToken{
 		UID:  ctx.User.Id,

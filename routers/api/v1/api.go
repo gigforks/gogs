@@ -10,16 +10,16 @@ import (
 	"github.com/go-macaron/binding"
 	"gopkg.in/macaron.v1"
 
-	api "github.com/gogits/go-gogs-client"
+	api "github.com/gigforks/go-gogs-client"
 
-	"github.com/gogits/gogs/models"
-	"github.com/gogits/gogs/modules/auth"
-	"github.com/gogits/gogs/modules/middleware"
-	"github.com/gogits/gogs/routers/api/v1/admin"
-	"github.com/gogits/gogs/routers/api/v1/misc"
-	"github.com/gogits/gogs/routers/api/v1/org"
-	"github.com/gogits/gogs/routers/api/v1/repo"
-	"github.com/gogits/gogs/routers/api/v1/user"
+	"github.com/gigforks/gogs/models"
+	"github.com/gigforks/gogs/modules/auth"
+	"github.com/gigforks/gogs/modules/middleware"
+	"github.com/gigforks/gogs/routers/api/v1/admin"
+	"github.com/gigforks/gogs/routers/api/v1/misc"
+	"github.com/gigforks/gogs/routers/api/v1/org"
+	"github.com/gigforks/gogs/routers/api/v1/repo"
+	"github.com/gigforks/gogs/routers/api/v1/user"
 )
 
 func RepoAssignment() macaron.Handler {

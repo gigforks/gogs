@@ -7,18 +7,18 @@ package models
 import (
 	"fmt"
 	"io/ioutil"
+	"net/url"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
 	"sync"
-	"net/url"
 
 	"github.com/Unknwon/com"
 
 	"github.com/gogits/git-module"
 
-	"github.com/gogits/gogs/modules/setting"
+	"github.com/gigforks/gogs/modules/setting"
 )
 
 // workingPool represents a pool of working status which makes sure

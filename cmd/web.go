@@ -29,23 +29,23 @@ import (
 	"gopkg.in/ini.v1"
 	"gopkg.in/macaron.v1"
 
+	"github.com/gigforks/go-gogs-client"
 	"github.com/gogits/git-module"
-	"github.com/gogits/go-gogs-client"
 
-	"github.com/gogits/gogs/models"
-	"github.com/gogits/gogs/modules/auth"
-	"github.com/gogits/gogs/modules/bindata"
-	"github.com/gogits/gogs/modules/log"
-	"github.com/gogits/gogs/modules/middleware"
-	"github.com/gogits/gogs/modules/setting"
-	"github.com/gogits/gogs/modules/template"
-	"github.com/gogits/gogs/routers"
-	"github.com/gogits/gogs/routers/admin"
-	apiv1 "github.com/gogits/gogs/routers/api/v1"
-	"github.com/gogits/gogs/routers/dev"
-	"github.com/gogits/gogs/routers/org"
-	"github.com/gogits/gogs/routers/repo"
-	"github.com/gogits/gogs/routers/user"
+	"github.com/gigforks/gogs/models"
+	"github.com/gigforks/gogs/modules/auth"
+	"github.com/gigforks/gogs/modules/bindata"
+	"github.com/gigforks/gogs/modules/log"
+	"github.com/gigforks/gogs/modules/middleware"
+	"github.com/gigforks/gogs/modules/setting"
+	"github.com/gigforks/gogs/modules/template"
+	"github.com/gigforks/gogs/routers"
+	"github.com/gigforks/gogs/routers/admin"
+	apiv1 "github.com/gigforks/gogs/routers/api/v1"
+	"github.com/gigforks/gogs/routers/dev"
+	"github.com/gigforks/gogs/routers/org"
+	"github.com/gigforks/gogs/routers/repo"
+	"github.com/gigforks/gogs/routers/user"
 )
 
 var CmdWeb = cli.Command{
@@ -89,7 +89,7 @@ func checkVersion() {
 		{"gopkg.in/ini.v1", ini.Version, "1.8.4"},
 		{"gopkg.in/macaron.v1", macaron.Version, "0.8.0"},
 		{"github.com/gogits/git-module", git.Version, "0.2.7"},
-		{"github.com/gogits/go-gogs-client", gogs.Version, "0.7.3"},
+		{"github.com/gigforks/go-gogs-client", gogs.Version, "0.7.3"},
 	}
 	for _, c := range checkers {
 		if !version.Compare(c.Version(), c.Expected, ">=") {

@@ -5,11 +5,11 @@
 package user
 
 import (
-	api "github.com/gogits/go-gogs-client"
+	api "github.com/gigforks/go-gogs-client"
 
-	"github.com/gogits/gogs/models"
-	"github.com/gogits/gogs/modules/middleware"
-	"github.com/gogits/gogs/routers/api/v1/convert"
+	"github.com/gigforks/gogs/models"
+	"github.com/gigforks/gogs/modules/middleware"
+	"github.com/gigforks/gogs/routers/api/v1/convert"
 )
 
 func responseApiUsers(ctx *middleware.Context, users []*models.User) {
@@ -33,7 +33,7 @@ func ListMyFollowers(ctx *middleware.Context) {
 	listUserFollowers(ctx, ctx.User)
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Users-Followers#list-followers-of-a-user
+// https://github.com/gigforks/go-gogs-client/wiki/Users-Followers#list-followers-of-a-user
 func ListFollowers(ctx *middleware.Context) {
 	u := GetUserByParams(ctx)
 	if ctx.Written() {
@@ -55,7 +55,7 @@ func ListMyFollowing(ctx *middleware.Context) {
 	listUserFollowing(ctx, ctx.User)
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Users-Followers#list-users-followed-by-another-user
+// https://github.com/gigforks/go-gogs-client/wiki/Users-Followers#list-users-followed-by-another-user
 func ListFollowing(ctx *middleware.Context) {
 	u := GetUserByParams(ctx)
 	if ctx.Written() {
@@ -72,7 +72,7 @@ func checkUserFollowing(ctx *middleware.Context, u *models.User, followID int64)
 	}
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Users-Followers#check-if-you-are-following-a-user
+// https://github.com/gigforks/go-gogs-client/wiki/Users-Followers#check-if-you-are-following-a-user
 func CheckMyFollowing(ctx *middleware.Context) {
 	target := GetUserByParams(ctx)
 	if ctx.Written() {
@@ -81,7 +81,7 @@ func CheckMyFollowing(ctx *middleware.Context) {
 	checkUserFollowing(ctx, ctx.User, target.Id)
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Users-Followers#check-if-one-user-follows-another
+// https://github.com/gigforks/go-gogs-client/wiki/Users-Followers#check-if-one-user-follows-another
 func CheckFollowing(ctx *middleware.Context) {
 	u := GetUserByParams(ctx)
 	if ctx.Written() {
@@ -94,7 +94,7 @@ func CheckFollowing(ctx *middleware.Context) {
 	checkUserFollowing(ctx, u, target.Id)
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Users-Followers#follow-a-user
+// https://github.com/gigforks/go-gogs-client/wiki/Users-Followers#follow-a-user
 func Follow(ctx *middleware.Context) {
 	target := GetUserByParams(ctx)
 	if ctx.Written() {
@@ -107,7 +107,7 @@ func Follow(ctx *middleware.Context) {
 	ctx.Status(204)
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Users-Followers#unfollow-a-user
+// https://github.com/gigforks/go-gogs-client/wiki/Users-Followers#unfollow-a-user
 func Unfollow(ctx *middleware.Context) {
 	target := GetUserByParams(ctx)
 	if ctx.Written() {
