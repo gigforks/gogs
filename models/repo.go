@@ -371,7 +371,10 @@ func updateLocalCopy(repoPath, localPath string) error {
 			return fmt.Errorf("Clone: %v", err)
 		}
 	} else {
-		if err := git.Pull(localPath, true); err != nil {
+		if err := git.Pull(localPath, git.PullRemoteOptions{
+			All:     true,
+			Timeout: time.Duration(setting.Git.Timeout.Pull) * time.Second,
+		}); err != nil {
 			return fmt.Errorf("Pull: %v", err)
 		}
 	}
