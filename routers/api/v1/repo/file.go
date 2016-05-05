@@ -7,12 +7,12 @@ package repo
 import (
 	"github.com/gogits/git-module"
 
-	"github.com/gogits/gogs/models"
-	"github.com/gogits/gogs/modules/middleware"
-	"github.com/gogits/gogs/routers/repo"
+	"github.com/gigforks/gogs/models"
+	"github.com/gigforks/gogs/modules/middleware"
+	"github.com/gigforks/gogs/routers/repo"
 )
 
-// https://github.com/gogits/go-gogs-client/wiki/Repositories-Contents#download-raw-content
+// https://github.com/gigforks/go-gogs-client/wiki/Repositories-Contents#download-raw-content
 func GetRawFile(ctx *middleware.Context) {
 	if !ctx.Repo.HasAccess() {
 		ctx.Error(404)
@@ -33,7 +33,7 @@ func GetRawFile(ctx *middleware.Context) {
 	}
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Repositories-Contents#download-archive
+// https://github.com/gigforks/go-gogs-client/wiki/Repositories-Contents#download-archive
 func GetArchive(ctx *middleware.Context) {
 	repoPath := models.RepoPath(ctx.Params(":username"), ctx.Params(":reponame"))
 	gitRepo, err := git.OpenRepository(repoPath)

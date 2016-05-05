@@ -5,10 +5,10 @@
 package dev
 
 import (
-	"github.com/gogits/gogs/models"
-	"github.com/gogits/gogs/modules/base"
-	"github.com/gogits/gogs/modules/middleware"
-	"github.com/gogits/gogs/modules/setting"
+	"github.com/gigforks/gogs/models"
+	"github.com/gigforks/gogs/modules/base"
+	"github.com/gigforks/gogs/modules/middleware"
+	"github.com/gigforks/gogs/modules/setting"
 )
 
 func TemplatePreview(ctx *middleware.Context) {

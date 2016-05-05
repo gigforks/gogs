@@ -9,11 +9,11 @@ import (
 
 	"github.com/Unknwon/com"
 
-	api "github.com/gogits/go-gogs-client"
+	api "github.com/gigforks/go-gogs-client"
 	"github.com/gogits/git-module"
 
-	"github.com/gogits/gogs/models"
-	"github.com/gogits/gogs/modules/setting"
+	"github.com/gigforks/gogs/models"
+	"github.com/gigforks/gogs/modules/setting"
 )
 
 // ToApiUser converts user to its API format.
@@ -52,21 +52,21 @@ func ToApiRepository(owner *models.User, repo *models.Repository, permission api
 }
 
 // ToApiBranch converts user to its API format.
-func ToApiBranch(b *models.Branch,c *git.Commit) *api.Branch {
+func ToApiBranch(b *models.Branch, c *git.Commit) *api.Branch {
 	return &api.Branch{
-			Name: b.Name,
-			Commit: ToApiCommit(c),
-		}
+		Name:   b.Name,
+		Commit: ToApiCommit(c),
+	}
 }
 
 // ToApiCommit converts user to its API format.
 func ToApiCommit(c *git.Commit) *api.PayloadCommit {
 	return &api.PayloadCommit{
-		ID: c.ID.String(),
+		ID:      c.ID.String(),
 		Message: c.Message(),
-		URL: "Not implemented",
+		URL:     "Not implemented",
 		Author: &api.PayloadAuthor{
-			Name: c.Committer.Name,
+			Name:  c.Committer.Name,
 			Email: c.Committer.Email,
 			/* UserName: c.Committer.UserName, */
 		},

@@ -9,17 +9,17 @@ import (
 
 	"github.com/Unknwon/com"
 
-	api "github.com/gogits/go-gogs-client"
+	api "github.com/gigforks/go-gogs-client"
 
-	"github.com/gogits/gogs/models"
-	"github.com/gogits/gogs/modules/auth"
-	"github.com/gogits/gogs/modules/log"
-	"github.com/gogits/gogs/modules/middleware"
-	"github.com/gogits/gogs/modules/setting"
-	"github.com/gogits/gogs/routers/api/v1/convert"
+	"github.com/gigforks/gogs/models"
+	"github.com/gigforks/gogs/modules/auth"
+	"github.com/gigforks/gogs/modules/log"
+	"github.com/gigforks/gogs/modules/middleware"
+	"github.com/gigforks/gogs/modules/setting"
+	"github.com/gigforks/gogs/routers/api/v1/convert"
 )
 
-// https://github.com/gogits/go-gogs-client/wiki/Repositories#search-repositories
+// https://github.com/gigforks/go-gogs-client/wiki/Repositories#search-repositories
 func Search(ctx *middleware.Context) {
 	opt := models.SearchOption{
 		Keyword: path.Base(ctx.Query("q")),
@@ -80,7 +80,7 @@ func Search(ctx *middleware.Context) {
 	})
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Repositories#list-your-repositories
+// https://github.com/gigforks/go-gogs-client/wiki/Repositories#list-your-repositories
 func ListMyRepos(ctx *middleware.Context) {
 	ownRepos, err := models.GetRepositories(ctx.User.Id, true)
 	if err != nil {
@@ -142,7 +142,7 @@ func CreateUserRepo(ctx *middleware.Context, owner *models.User, opt api.CreateR
 	ctx.JSON(201, convert.ToApiRepository(owner, repo, api.Permission{true, true, true}))
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Repositories#create
+// https://github.com/gigforks/go-gogs-client/wiki/Repositories#create
 func Create(ctx *middleware.Context, opt api.CreateRepoOption) {
 	// Shouldn't reach this condition, but just in case.
 	if ctx.User.IsOrganization() {
@@ -170,7 +170,7 @@ func CreateOrgRepo(ctx *middleware.Context, opt api.CreateRepoOption) {
 	CreateUserRepo(ctx, org, opt)
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Repositories#migrate
+// https://github.com/gigforks/go-gogs-client/wiki/Repositories#migrate
 func Migrate(ctx *middleware.Context, form auth.MigrateRepoForm) {
 	ctxUser := ctx.User
 	// Not equal means context user is an organization,
@@ -266,7 +266,7 @@ func parseOwnerAndRepo(ctx *middleware.Context) (*models.User, *models.Repositor
 	return owner, repo
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Repositories#get
+// https://github.com/gigforks/go-gogs-client/wiki/Repositories#get
 func Get(ctx *middleware.Context) {
 	owner, repo := parseOwnerAndRepo(ctx)
 	if ctx.Written() {
@@ -276,7 +276,7 @@ func Get(ctx *middleware.Context) {
 	ctx.JSON(200, convert.ToApiRepository(owner, repo, api.Permission{true, true, true}))
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Repositories#delete
+// https://github.com/gigforks/go-gogs-client/wiki/Repositories#delete
 func Delete(ctx *middleware.Context) {
 	owner, repo := parseOwnerAndRepo(ctx)
 	if ctx.Written() {

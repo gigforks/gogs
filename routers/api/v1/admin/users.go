@@ -5,17 +5,17 @@
 package admin
 
 import (
-	api "github.com/gogits/go-gogs-client"
+	api "github.com/gigforks/go-gogs-client"
 
 	"github.com/Unknwon/com"
 
-	"github.com/gogits/gogs/models"
-	"github.com/gogits/gogs/modules/log"
-	"github.com/gogits/gogs/modules/mailer"
-	"github.com/gogits/gogs/modules/middleware"
-	"github.com/gogits/gogs/modules/setting"
-	"github.com/gogits/gogs/routers/api/v1/convert"
-	"github.com/gogits/gogs/routers/api/v1/user"
+	"github.com/gigforks/gogs/models"
+	"github.com/gigforks/gogs/modules/log"
+	"github.com/gigforks/gogs/modules/mailer"
+	"github.com/gigforks/gogs/modules/middleware"
+	"github.com/gigforks/gogs/modules/setting"
+	"github.com/gigforks/gogs/routers/api/v1/convert"
+	"github.com/gigforks/gogs/routers/api/v1/user"
 )
 
 func parseLoginSource(ctx *middleware.Context, u *models.User, sourceID int64, loginName string) {
@@ -38,7 +38,7 @@ func parseLoginSource(ctx *middleware.Context, u *models.User, sourceID int64, l
 	u.LoginName = loginName
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Administration-Users#create-a-new-user
+// https://github.com/gigforks/go-gogs-client/wiki/Administration-Users#create-a-new-user
 func CreateUser(ctx *middleware.Context, form api.CreateUserOption) {
 	u := &models.User{
 		Name:      form.Username,
@@ -74,7 +74,7 @@ func CreateUser(ctx *middleware.Context, form api.CreateUserOption) {
 	ctx.JSON(201, convert.ToApiUser(u))
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Administration-Users#edit-an-existing-user
+// https://github.com/gigforks/go-gogs-client/wiki/Administration-Users#edit-an-existing-user
 func EditUser(ctx *middleware.Context, form api.EditUserOption) {
 	u := user.GetUserByParams(ctx)
 	if ctx.Written() {
@@ -123,7 +123,7 @@ func EditUser(ctx *middleware.Context, form api.EditUserOption) {
 	ctx.JSON(200, convert.ToApiUser(u))
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Administration-Users#delete-a-user
+// https://github.com/gigforks/go-gogs-client/wiki/Administration-Users#delete-a-user
 func DeleteUser(ctx *middleware.Context) {
 	u := user.GetUserByParams(ctx)
 	if ctx.Written() {
@@ -144,7 +144,7 @@ func DeleteUser(ctx *middleware.Context) {
 	ctx.Status(204)
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Administration-Users#create-a-public-key-for-user
+// https://github.com/gigforks/go-gogs-client/wiki/Administration-Users#create-a-public-key-for-user
 func CreatePublicKey(ctx *middleware.Context, form api.CreateKeyOption) {
 	u := user.GetUserByParams(ctx)
 	if ctx.Written() {

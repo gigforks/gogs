@@ -7,13 +7,13 @@ package user
 import (
 	"github.com/Unknwon/com"
 
-	api "github.com/gogits/go-gogs-client"
+	api "github.com/gigforks/go-gogs-client"
 
-	"github.com/gogits/gogs/models"
-	"github.com/gogits/gogs/modules/middleware"
+	"github.com/gigforks/gogs/models"
+	"github.com/gigforks/gogs/modules/middleware"
 )
 
-// https://github.com/gogits/go-gogs-client/wiki/Users#search-users
+// https://github.com/gigforks/go-gogs-client/wiki/Users#search-users
 func Search(ctx *middleware.Context) {
 	opt := models.SearchOption{
 		Keyword: ctx.Query("q"),
@@ -51,7 +51,7 @@ func Search(ctx *middleware.Context) {
 	})
 }
 
-// https://github.com/gogits/go-gogs-client/wiki/Users#get-a-single-user
+// https://github.com/gigforks/go-gogs-client/wiki/Users#get-a-single-user
 func GetInfo(ctx *middleware.Context) {
 	u, err := models.GetUserByName(ctx.Params(":username"))
 	if err != nil {

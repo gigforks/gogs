@@ -18,8 +18,8 @@ import (
 	"github.com/russross/blackfriday"
 	"golang.org/x/net/html"
 
-	"github.com/gogits/gogs/modules/base"
-	"github.com/gogits/gogs/modules/setting"
+	"github.com/gigforks/gogs/modules/base"
+	"github.com/gigforks/gogs/modules/setting"
 )
 
 var Sanitizer = bluemonday.UGCPolicy()
