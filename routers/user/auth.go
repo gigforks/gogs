@@ -8,6 +8,7 @@ import (
 	"net/url"
 
 	"github.com/go-macaron/captcha"
+	"golang.org/x/oauth2"
 
 	"github.com/gigforks/gogs/models"
 	"github.com/gigforks/gogs/modules/auth"
@@ -189,6 +190,34 @@ func SignUpPost(ctx *middleware.Context, cpt *captcha.Captcha, form auth.Registe
 	}
 
 	ctx.Redirect(setting.AppSubUrl + "/user/login")
+}
+
+func OauthAuthorize(ctx *middleware.Context)  {
+	// Cfg, err := ini.Load(bindata.MustAsset("conf/app.ini"))
+	// if err != nil {
+	// 	log.Fatal(4, "Fail to parse 'conf/app.ini': %v", err)
+	// }	
+	ctx.Data["Title"] = ctx.Tr("oauth/authorize") 
+	
+	conf := &oauth2.Config{
+		ClientID:     setting.Cfg.Section("oauth").Key("CLIENTID").String(),
+		ClientSecret: setting.Cfg.Section("oauth").Key("CLIENTSECRET").String(),
+		RedirectURL: setting.Cfg.Section("oauth").Key("REDIRECTURL").String(),
+		Scopes:       []string{setting.Cfg.Section("oauth").Key("SCOPE").String()},
+		Endpoint: oauth2.Endpoint{
+			AuthURL:  setting.Cfg.Section("oauth").Key("AUTHURL").String(),
+			TokenURL: setting.Cfg.Section("oauth").Key("TOKENURL").String(),
+		},
+	}
+	
+	url := conf.AuthCodeURL("state", oauth2.AccessTypeOnline)
+	ctx.Redirect(setting.AppSubUrl + url)
+}
+
+func OauthRedirect(ctx *middleware.Context) {
+	
+	ctx.Data["Title"] = ctx.Tr("oauth/redirect")
+	ctx.Redirect(setting.AppDataPath + "/user/login")
 }
 
 func Activate(ctx *middleware.Context) {
