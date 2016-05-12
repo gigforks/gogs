@@ -16,6 +16,7 @@ import (
 	"github.com/gigforks/gogs/modules/auth"
 	"github.com/gigforks/gogs/modules/middleware"
 	"github.com/gigforks/gogs/routers/api/v1/admin"
+	issues "github.com/gigforks/gogs/routers/api/v1/issues"
 	"github.com/gigforks/gogs/routers/api/v1/misc"
 	"github.com/gigforks/gogs/routers/api/v1/org"
 	"github.com/gigforks/gogs/routers/api/v1/repo"
@@ -173,6 +174,9 @@ func RegisterRoutes(m *macaron.Macaron) {
 		})
 
 		m.Group("/repos", func() {
+			m.Group("/issues", func(){
+				m.Post("", bind(issues.CreateIssueOption{}), issues.CreateIssue)
+			})
 			m.Post("/migrate", bind(auth.MigrateRepoForm{}), repo.Migrate)
 			m.Combo("/:username/:reponame").Get(repo.Get).
 				Delete(repo.Delete)

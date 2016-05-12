@@ -14,7 +14,7 @@ import (
 	"strings"
 	"io/ioutil"
 	"fmt"
-	"github.com/dchest/uniuri"
+	// "github.com/dchest/uniuri"
 
 	"github.com/gigforks/gogs/models"
 	"github.com/gigforks/gogs/modules/auth"
@@ -252,58 +252,58 @@ func OauthRedirect(ctx *middleware.Context) {
 	req.Header.Add("Authorize", fmt.Sprintf("token %s", accessToken))
 	infoResponse, err := client.Do(req)	
 	infobd, _ := ioutil.ReadAll(infoResponse.Body)
-	passwd := uniuri.NewLen(20)
+	// passwd := uniuri.NewLen(20)
 	
 	
-	//add to cookies and check user existence
-	ctx.SetCookie(setting.CookieUserName, username)
-	u := &models.User{
-		Name:     username,
-		Email:    form.Email,
-		Passwd:   passwd,
-		IsActive: !setting.Service.RegisterEmailConfirm,
-	}
-	if err := models.CreateUser(u); err != nil {
-		switch {
-		case models.IsErrUserAlreadyExist(err):
-			middleware.AutoSignIn(ctx)
-		case models.IsErrEmailAlreadyUsed(err):
-			ctx.Data["Err_Email"] = true
-			ctx.Handle(500, "email_been_used", err)
-		case models.IsErrNamePatternNotAllowed(err):
-			ctx.Data["Err_UserName"] = true
-			ctx.Handle(500, "user_pattern_not_allowed", err)
-		default:
-			ctx.Handle(500, "CreateUser", err)
-		}
-		return
-	}
+	// //add to cookies and check user existence
+	// ctx.SetCookie(setting.CookieUserName, username)
+	// u := &models.User{
+	// 	Name:     username,
+	// 	Email:    form.Email,
+	// 	Passwd:   passwd,
+	// 	IsActive: !setting.Service.RegisterEmailConfirm,
+	// }
+	// if err := models.CreateUser(u); err != nil {
+	// 	switch {
+	// 	case models.IsErrUserAlreadyExist(err):
+	// 		middleware.AutoSignIn(ctx)
+	// 	case models.IsErrEmailAlreadyUsed(err):
+	// 		ctx.Data["Err_Email"] = true
+	// 		ctx.Handle(500, "email_been_used", err)
+	// 	case models.IsErrNamePatternNotAllowed(err):
+	// 		ctx.Data["Err_UserName"] = true
+	// 		ctx.Handle(500, "user_pattern_not_allowed", err)
+	// 	default:
+	// 		ctx.Handle(500, "CreateUser", err)
+	// 	}
+	// 	return
+	// }
 	
-	log.Trace("Account created: %s", u.Name)
+	// log.Trace("Account created: %s", u.Name)
 
-	// Auto-set admin for the only user.
-	if models.CountUsers() == 1 {
-		u.IsAdmin = true
-		u.IsActive = true
-		if err := models.UpdateUser(u); err != nil {
-			ctx.Handle(500, "UpdateUser", err)
-			return
-		}
-	}
+	// // Auto-set admin for the only user.
+	// if models.CountUsers() == 1 {
+	// 	u.IsAdmin = true
+	// 	u.IsActive = true
+	// 	if err := models.UpdateUser(u); err != nil {
+	// 		ctx.Handle(500, "UpdateUser", err)
+	// 		return
+	// 	}
+	// }
 
-	// Send confirmation e-mail, no need for social account.
-	if setting.Service.RegisterEmailConfirm && u.Id > 1 {
-		mailer.SendActivateAccountMail(ctx.Context, u)
-		ctx.Data["IsSendRegisterMail"] = true
-		ctx.Data["Email"] = u.Email
-		ctx.Data["Hours"] = setting.Service.ActiveCodeLives / 60
-		ctx.HTML(200, ACTIVATE)
+	// // Send confirmation e-mail, no need for social account.
+	// if setting.Service.RegisterEmailConfirm && u.Id > 1 {
+	// 	mailer.SendActivateAccountMail(ctx.Context, u)
+	// 	ctx.Data["IsSendRegisterMail"] = true
+	// 	ctx.Data["Email"] = u.Email
+	// 	ctx.Data["Hours"] = setting.Service.ActiveCodeLives / 60
+	// 	ctx.HTML(200, ACTIVATE)
 
-		if err := ctx.Cache.Put("MailResendLimit_"+u.LowerName, u.LowerName, 180); err != nil {
-			log.Error(4, "Set cache(MailResendLimit) fail: %v", err)
-		}
-		return
-	}	 
+	// 	if err := ctx.Cache.Put("MailResendLimit_"+u.LowerName, u.LowerName, 180); err != nil {
+	// 		log.Error(4, "Set cache(MailResendLimit) fail: %v", err)
+	// 	}
+	// 	return
+	// }	 
 	
 	//debugging 
 	log.Debug("status code  ::: %v ",  infoResponse.StatusCode)
