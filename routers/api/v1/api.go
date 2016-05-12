@@ -174,14 +174,15 @@ func RegisterRoutes(m *macaron.Macaron) {
 		})
 
 		m.Group("/repos", func() {
-			m.Group("/issues", func(){
-				m.Post("", bind(issues.CreateIssueOption{}), issues.CreateIssue)
-			})
+
 			m.Post("/migrate", bind(auth.MigrateRepoForm{}), repo.Migrate)
 			m.Combo("/:username/:reponame").Get(repo.Get).
 				Delete(repo.Delete)
 
 			m.Group("/:username/:reponame", func() {
+				m.Group("/issues", func() {
+					m.Combo("").Post(bind(issues.IssueOption{}), issues.CreateIssue).Get(issues.ListIssues)
+				})
 				m.Group("/access", func() {
 					m.Combo("").Get(repo.ListUserAccess).
 						Post(bind(api.CreateAccessOption{}), repo.GiveUserAccess)
