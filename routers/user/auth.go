@@ -9,6 +9,13 @@ import (
 	"net/url"
 
 	"github.com/go-macaron/captcha"
+	"golang.org/x/oauth2"
+	"net/http"
+	"encoding/json"
+	"strings"
+	"io/ioutil"
+	// "fmt"
+	// "github.com/dchest/uniuri"
 
 	"github.com/gigforks/gogs/models"
 	"github.com/gigforks/gogs/modules/auth"
@@ -235,6 +242,124 @@ func SignUpPost(ctx *context.Context, cpt *captcha.Captcha, form auth.RegisterFo
 	}
 
 	ctx.Redirect(setting.AppSubUrl + "/user/login")
+}
+func OauthAuthorize(ctx *context.Context)  {
+
+	// Cfg, err := ini.Load(bindata.MustAsset("conf/app.ini"))
+	// if err != nil {
+	// 	log.Fatal(4, "Fail to parse 'conf/app.ini': %v", err)
+	// }	
+	ctx.Data["Title"] = ctx.Tr("oauth/authorize") 	
+	conf := &oauth2.Config{
+		ClientID:     setting.Cfg.Section("oauth").Key("CLIENTID").String(),
+		ClientSecret: setting.Cfg.Section("oauth").Key("CLIENTSECRET").String(),
+		RedirectURL: setting.Cfg.Section("oauth").Key("REDIRECTURL").String(),
+		Scopes:       []string{setting.Cfg.Section("oauth").Key("SCOPE").String()},
+		Endpoint: oauth2.Endpoint{
+			AuthURL:  setting.Cfg.Section("oauth").Key("AUTHURL").String(),
+			TokenURL: setting.Cfg.Section("oauth").Key("TOKENURL").String(),
+		},
+	}
+	
+	url := conf.AuthCodeURL("state", oauth2.AccessTypeOnline)
+	ctx.Redirect(setting.AppSubUrl + url)
+}
+
+func OauthRedirect(ctx *context.Context) {		
+	//request token using code 
+	code := ctx.Query("code")	
+	v := url.Values{}
+	v.Add("code", code)
+	v.Add("client_id", setting.Cfg.Section("oauth").Key("CLIENTID").String() )
+	v.Add("client_secret",setting.Cfg.Section("oauth").Key("CLIENTSECRET").String() )
+	v.Add("redirect_uri", setting.Cfg.Section("oauth").Key("REDIRECTURL").String() )
+	v.Add("state", "state")	
+	tokenResponse, _ := http.Post(setting.Cfg.Section("oauth").Key("TOKENURL").String(), "application/x-www-form-urlencoded", strings.NewReader(v.Encode()))
+	
+	//parse tokenResponse 
+	tokenbd, _ := ioutil.ReadAll(tokenResponse.Body)
+	type bdy struct {
+		AccessToken string `json:"access_token"`
+		TokenType string  `json:"token_type"`
+		Scope string `json:"scope"`
+		Info map[string]string `json:"info"`
+	}
+	data := bdy{}
+	json.Unmarshal(tokenbd, &data)
+	
+	//get info and set proper variables
+	accessToken := data.AccessToken
+	username := data.Info["username"]
+	client := http.Client{}
+	req , err := http.NewRequest("GET", fmt.Sprintf("https://itsyou.online/users/%s/info", username), nil)
+	req.Header.Add("Accept", "application/json")
+	req.Header.Add("Authorize", fmt.Sprintf("token %s", accessToken))
+	infoResponse, err := client.Do(req)	
+	infobd, _ := ioutil.ReadAll(infoResponse.Body)
+	// passwd := uniuri.NewLen(20)
+	
+	
+	// //add to cookies and check user existence
+	// ctx.SetCookie(setting.CookieUserName, username)
+	// u := &models.User{
+	// 	Name:     username,
+	// 	Email:    form.Email,
+	// 	Passwd:   passwd,
+	// 	IsActive: !setting.Service.RegisterEmailConfirm,
+	// }
+	// if err := models.CreateUser(u); err != nil {
+	// 	switch {
+	// 	case models.IsErrUserAlreadyExist(err):
+	// 		context.AutoSignIn(ctx)
+	// 	case models.IsErrEmailAlreadyUsed(err):
+	// 		ctx.Data["Err_Email"] = true
+	// 		ctx.Handle(500, "email_been_used", err)
+	// 	case models.IsErrNamePatternNotAllowed(err):
+	// 		ctx.Data["Err_UserName"] = true
+	// 		ctx.Handle(500, "user_pattern_not_allowed", err)
+	// 	default:
+	// 		ctx.Handle(500, "CreateUser", err)
+	// 	}
+	// 	return
+	// }
+	
+	// log.Trace("Account created: %s", u.Name)
+
+	// // Auto-set admin for the only user.
+	// if models.CountUsers() == 1 {
+	// 	u.IsAdmin = true
+	// 	u.IsActive = true
+	// 	if err := models.UpdateUser(u); err != nil {
+	// 		ctx.Handle(500, "UpdateUser", err)
+	// 		return
+	// 	}
+	// }
+
+	// // Send confirmation e-mail, no need for social account.
+	// if setting.Service.RegisterEmailConfirm && u.Id > 1 {
+	// 	mailer.SendActivateAccountMail(ctx.Context, u)
+	// 	ctx.Data["IsSendRegisterMail"] = true
+	// 	ctx.Data["Email"] = u.Email
+	// 	ctx.Data["Hours"] = setting.Service.ActiveCodeLives / 60
+	// 	ctx.HTML(200, ACTIVATE)
+
+	// 	if err := ctx.Cache.Put("MailResendLimit_"+u.LowerName, u.LowerName, 180); err != nil {
+	// 		log.Error(4, "Set cache(MailResendLimit) fail: %v", err)
+	// 	}
+	// 	return
+	// }	 
+	
+	//debugging 
+	log.Debug("status code  ::: %v ",  infoResponse.StatusCode)
+	log.Debug("body  ::: %v ",  string(infobd))	
+	log.Debug("url sent ::: %s", req.URL.String())
+	log.Debug("user name  :::" + username)
+	if err == nil {
+		panic(err)
+	}
+
+	// ctx.Data["Title"] = ctx.Tr("oauth/redirect")
+	ctx.Redirect(setting.AppUrl + "/user/login")
 }
 
 func Activate(ctx *context.Context) {
