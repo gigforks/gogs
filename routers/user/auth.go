@@ -245,10 +245,6 @@ func SignUpPost(ctx *context.Context, cpt *captcha.Captcha, form auth.RegisterFo
 }
 func OauthAuthorize(ctx *context.Context) {
 
-	// Cfg, err := ini.Load(bindata.MustAsset("conf/app.ini"))
-	// if err != nil {
-	// 	log.Fatal(4, "Fail to parse 'conf/app.ini': %v", err)
-	// }
 	ctx.Data["Title"] = ctx.Tr("oauth/authorize")
 	conf := &oauth2.Config{
 		ClientID:     setting.Cfg.Section("oauth").Key("CLIENTID").String(),
