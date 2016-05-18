@@ -9,7 +9,6 @@ import (
 	"net/url"
 
 	"encoding/json"
-	"io/ioutil"
 	"net/http"
 	"strings"
 
@@ -256,35 +255,42 @@ func OauthAuthorize(ctx *context.Context) {
 			TokenURL: setting.Cfg.Section("oauth").Key("TOKENURL").String(),
 		},
 	}
-
-	url := conf.AuthCodeURL("state", oauth2.AccessTypeOnline)
+	random := base.GetRandomString(10)
+	ctx.SetCookie("state", random, setting.AppUrl)
+	url := conf.AuthCodeURL(random, oauth2.AccessTypeOnline)
 	ctx.Redirect(setting.AppSubUrl + url)
 }
 
 func OauthRedirect(ctx *context.Context) {
 	//request token using code
 	code := ctx.Query("code")
+
 	v := url.Values{}
 	v.Add("code", code)
 	v.Add("client_id", setting.Cfg.Section("oauth").Key("CLIENTID").String())
 	v.Add("client_secret", setting.Cfg.Section("oauth").Key("CLIENTSECRET").String())
 	v.Add("redirect_uri", setting.Cfg.Section("oauth").Key("REDIRECTURL").String())
-	v.Add("state", "state")
-	tokenResponse, _ := http.Post(setting.Cfg.Section("oauth").Key("TOKENURL").String(), "application/x-www-form-urlencoded", strings.NewReader(v.Encode()))
+	v.Add("state", ctx.GetCookie("state"))
+	tokenResponse, err := http.Post(setting.Cfg.Section("oauth").Key("TOKENURL").String(), "application/x-www-form-urlencoded", strings.NewReader(v.Encode()))
 
-	//parse tokenResponse
-	tokenbd, _ := ioutil.ReadAll(tokenResponse.Body)
-	type bdy struct {
+	if err != nil {
+		ctx.Handle(500, "post to token url", err)
+	}
+
+	type responseData struct {
 		AccessToken string            `json:"access_token"`
 		TokenType   string            `json:"token_type"`
 		Scope       string            `json:"scope"`
 		Info        map[string]string `json:"info"`
 	}
-	data := bdy{}
-	json.Unmarshal(tokenbd, &data)
+	data := responseData{}
+	decoder := json.NewDecoder(tokenResponse.Body)
+	decoder.Decode(&data)
 
 	//get info and set proper variables
-	_ = data.AccessToken
+	if  data.AccessToken == "" {
+		ctx.HandleText(500, "client error")
+	}
 	username := data.Info["username"]
 	// client := http.Client{}
 	// req, err := http.NewRequest("GET", fmt.Sprintf("https://itsyou.online/users/%s/info", username), nil)
@@ -302,12 +308,11 @@ func OauthRedirect(ctx *context.Context) {
 		IsActive: !setting.Service.RegisterEmailConfirm,
 	}
 
-	err := models.CreateUser(u)
-	
-	if err != nil && models.IsErrUserAlreadyExist(err) == false {	
+	err = models.CreateUser(u)
+
+	if err != nil && models.IsErrUserAlreadyExist(err) == false {
 		ctx.Handle(500, "create_user_oauth", err)
 	}
-	
 
 	// Auto-set admin for the only user.
 	if models.CountUsers() == 1 {
