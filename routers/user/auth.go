@@ -256,7 +256,10 @@ func OauthAuthorize(ctx *context.Context) {
 		},
 	}
 	random := base.GetRandomString(10)
-	ctx.SetCookie("state", random, setting.AppUrl)
+	err := ctx.Session.Set("state", random)
+	if err != nil {
+		ctx.Handle(500, "error in session", err)
+	}
 	url := conf.AuthCodeURL(random, oauth2.AccessTypeOnline)
 	ctx.Redirect(setting.AppSubUrl + url)
 }
@@ -270,7 +273,7 @@ func OauthRedirect(ctx *context.Context) {
 	v.Add("client_id", setting.Cfg.Section("oauth").Key("CLIENTID").String())
 	v.Add("client_secret", setting.Cfg.Section("oauth").Key("CLIENTSECRET").String())
 	v.Add("redirect_uri", setting.Cfg.Section("oauth").Key("REDIRECTURL").String())
-	v.Add("state", ctx.GetCookie("state"))
+	v.Add("state", ctx.Session.Get("state").(string))
 	tokenResponse, err := http.Post(setting.Cfg.Section("oauth").Key("TOKENURL").String(), "application/x-www-form-urlencoded", strings.NewReader(v.Encode()))
 
 	if err != nil {
