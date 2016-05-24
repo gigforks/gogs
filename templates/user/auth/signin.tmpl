@@ -29,11 +29,9 @@
 						<label></label>
 						<button class="ui green button">{{.i18n.Tr "sign_in"}}</button>
 						<span style="margin-right: 5px;">Or</span>
-						<form action="{{AppSubUrl}}/user/oauth/authorize">
-							<button class="ui blue button">itsyou.online</button>
-						</form>
+						<a href="{{AppSubUrl}}/user/oauth/authorize" class="ui blue button">itsyou.online</a>
 						<div class="center" style="margin-top: 10px;">
-							<a href="{{AppSubUrl}}/user/forget_password">{{.i18n.Tr "auth.forget_password"}}</a>	
+							<a href="{{AppSubUrl}}/user/forget_password">{{.i18n.Tr "auth.forget_password"}}</a>
 						</div>
 					</div>
 					{{if .ShowRegistrationButton}}
