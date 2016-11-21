@@ -161,6 +161,16 @@ var (
 		FileExtensions      []string
 	}
 
+	//OAuth settings.
+	OAuthCfg struct {
+		ClientID     string `ini:"CLIENT_ID"`
+		ClientSecret string `ini:"CLIENT_SECRET"`
+		RedirectURL  string `ini:"REDIRECT_URL"`
+		AuthURL      string `ini:"AUTH_URL"`
+		TokenURL     string `ini:"TOKEN_URL"`
+		Scope        string `ini:"SCOPE"`
+	}
+
 	// Picture settings
 	AvatarUploadPath      string
 	GravatarSource        string
@@ -442,7 +452,6 @@ func NewContext() {
 			SSH.MinimumKeySizes[strings.ToLower(key.Name())] = key.MustInt()
 		}
 	}
-
 	sec = Cfg.Section("security")
 	InstallLock = sec.Key("INSTALL_LOCK").MustBool()
 	SecretKey = sec.Key("SECRET_KEY").String()
@@ -552,6 +561,8 @@ func NewContext() {
 		log.Fatal(4, "Fail to map UI settings: %v", err)
 	} else if err = Cfg.Section("markdown").MapTo(&Markdown); err != nil {
 		log.Fatal(4, "Fail to map Markdown settings: %v", err)
+	} else if err = Cfg.Section("itsyouonline").MapTo(&OAuthCfg); err != nil {
+		log.Fatal(4, "Fail to map OAuthCfg settings: %v", err)
 	} else if err = Cfg.Section("cron").MapTo(&Cron); err != nil {
 		log.Fatal(4, "Fail to map Cron settings: %v", err)
 	} else if err = Cfg.Section("git").MapTo(&Git); err != nil {
@@ -682,6 +693,7 @@ func newLogService() {
 }
 
 func newCacheService() {
+
 	CacheAdapter = Cfg.Section("cache").Key("ADAPTER").In("memory", []string{"memory", "redis", "memcache"})
 	switch CacheAdapter {
 	case "memory":
