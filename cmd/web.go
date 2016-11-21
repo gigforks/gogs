@@ -201,7 +201,6 @@ func runWeb(ctx *cli.Context) error {
 	ignSignIn := context.Toggle(&context.ToggleOptions{SignInRequired: setting.Service.RequireSignInView})
 	ignSignInAndCsrf := context.Toggle(&context.ToggleOptions{DisableCSRF: true})
 	reqSignOut := context.Toggle(&context.ToggleOptions{SignOutRequired: true})
-
 	bindIgnErr := binding.BindIgnErr
 
 	// FIXME: not all routes need go through same middlewares.
@@ -216,6 +215,12 @@ func runWeb(ctx *cli.Context) error {
 		m.Get("/users", routers.ExploreUsers)
 		m.Get("/organizations", routers.ExploreOrganizations)
 	}, ignSignIn)
+
+	m.Group("/oauth", func() {
+		m.Get("/authorize", user.OAuthAuthorize)
+		m.Get("/redirect", user.OAuthRedirect)
+	}, reqSignOut)
+
 	m.Combo("/install", routers.InstallInit).Get(routers.Install).
 		Post(bindIgnErr(auth.InstallForm{}), routers.InstallPost)
 	m.Get("/^:type(issues|pulls)$", reqSignIn, user.Issues)
