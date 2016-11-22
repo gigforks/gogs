@@ -184,13 +184,12 @@ func OAuthAuthorize(ctx *context.Context) {
 
 	ctx.Session.Set("state", rnd)
 	codeURL := cnf.AuthCodeURL(rnd)
-	fmt.Println("CODEURL:: ", codeURL)
 	ctx.Redirect(codeURL)
 
 }
 
 func OAuthRedirect(ctx *context.Context) {
-
+	//EXCHANGE CODE FOR ACCESS TOKEN.
 	code := ctx.Query("code")
 	v := url.Values{}
 	v.Add("client_id", setting.OAuthCfg.ClientID)
@@ -254,7 +253,7 @@ func OAuthRedirect(ctx *context.Context) {
 			u := &models.User{
 				Name:     username,
 				Email:    email,
-				Passwd:   "rooter",
+				Passwd:   base.GetRandomString(10),
 				IsActive: true,
 			}
 
