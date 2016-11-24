@@ -249,6 +249,8 @@ func RegisterRoutes(m *macaron.Macaron) {
 						Delete(repo.DeleteHook)
 				})
 				m.Put("/collaborators/:collaborator", bind(api.AddCollaboratorOption{}), repo.AddCollaborator)
+				m.Delete("/collaborators/:collaborator", bind(api.AddCollaboratorOption{}), repo.DeleteCollaborator)
+
 				m.Get("/raw/*", context.RepoRef(), repo.GetRawFile)
 				m.Get("/archive/*", repo.GetArchive)
 				m.Group("/branches", func() {
