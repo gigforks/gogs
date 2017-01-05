@@ -12,6 +12,21 @@ SCOPE        = user:email
 
 ```
 
+To disable the standard registration flow, set the `DISABLE_REGISRATION` to `TRUE`
+in the same custom/conf/app.ini file. This setting is found in the `[service]` section.
+For example:
+
+```
+[service]
+REGISTER_EMAIL_CONFIRM = false
+ENABLE_NOTIFY_MAIL     = false
+DISABLE_REGISTRATION   = true  <-----
+ENABLE_CAPTCHA         = false
+REQUIRE_SIGNIN_VIEW    = false
+```
+
+
+
 ## To extend locales of the application
 Create your custom locale under custom/conf ( for example you will have `custom/conf/locale/locale_en-US.ini`)
 Add required words

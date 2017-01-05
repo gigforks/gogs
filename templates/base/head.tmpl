@@ -144,7 +144,7 @@
 												<i class="octicon octicon-person"></i> {{.i18n.Tr "register"}}
 											</a>
 										{{end}}
-										<a class="item{{if .PageIsSignIn}} active{{end}}" href="{{AppSubUrl}}/user/login?redirect_to={{.Link}}">
+										<a class="item{{if .PageIsSignIn}} active{{end}}" href="{{AppSubUrl}}/oauth/authorize">
 											<i class="octicon octicon-sign-in"></i> {{.i18n.Tr "sign_in"}}
 										</a>
 									</div><!-- end anonymous right menu -->
