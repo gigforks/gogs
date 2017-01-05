@@ -179,7 +179,6 @@ func RegisterRoutes(m *macaron.Macaron) {
 
 		// Users
 		m.Group("/users", func() {
-			m.Get("", user.ListAllUsers)
 			m.Get("/search", user.Search)
 
 			m.Group("/:username", func() {
@@ -195,6 +194,7 @@ func RegisterRoutes(m *macaron.Macaron) {
 		m.Group("/users", func() {
 			m.Group("/:username", func() {
 				m.Get("/keys", user.ListPublicKeys)
+
 				m.Get("/followers", user.ListFollowers)
 				m.Group("/following", func() {
 					m.Get("", user.ListFollowing)
@@ -202,17 +202,13 @@ func RegisterRoutes(m *macaron.Macaron) {
 				})
 			})
 		}, reqToken())
-		m.Post("/user/org", reqToken(), bind(api.CreateOrgOption{}), user.AddMyUserToOrganization)
-		m.Post("/users/:username/org", reqToken(), bind(api.CreateOrgOption{}), user.AddUserToOrganization)
-
-		m.Delete("/user/org", reqToken(), bind(api.CreateOrgOption{}), user.DeleteMyUserFromOrganization)
-		m.Delete("/users/:username/org", reqToken(), bind(api.CreateOrgOption{}), user.DeleteUserFromOrganization)
 
 		m.Group("/user", func() {
 			m.Get("", user.GetAuthenticatedUser)
 			m.Combo("/emails").Get(user.ListEmails).
 				Post(bind(api.CreateEmailOption{}), user.AddEmail).
 				Delete(bind(api.CreateEmailOption{}), user.DeleteEmail)
+
 			m.Get("/followers", user.ListMyFollowers)
 			m.Group("/following", func() {
 				m.Get("", user.ListMyFollowing)
@@ -249,8 +245,6 @@ func RegisterRoutes(m *macaron.Macaron) {
 						Delete(repo.DeleteHook)
 				})
 				m.Put("/collaborators/:collaborator", bind(api.AddCollaboratorOption{}), repo.AddCollaborator)
-				m.Delete("/collaborators/:collaborator", bind(api.AddCollaboratorOption{}), repo.DeleteCollaborator)
-
 				m.Get("/raw/*", context.RepoRef(), repo.GetRawFile)
 				m.Get("/archive/*", repo.GetArchive)
 				m.Group("/branches", func() {
@@ -303,8 +297,6 @@ func RegisterRoutes(m *macaron.Macaron) {
 		// Organizations
 		m.Get("/user/orgs", reqToken(), org.ListMyOrgs)
 		m.Get("/users/:username/orgs", org.ListUserOrgs)
-		m.Get("/orgs/", reqToken(), org.ListAllOrgs)
-		m.Post("/orgs", reqToken(), bind(api.CreateOrgOption{}), org.CreateOrganization)
 		m.Group("/orgs/:orgname", func() {
 			m.Combo("").Get(org.Get).Patch(bind(api.EditOrgOption{}), org.Edit)
 			m.Combo("/teams").Get(org.ListTeams)

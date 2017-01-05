@@ -1,7 +1,7 @@
 @footer-margin: 40px;
 
 body {
-	font-family: "Helvetica Neue", "Meiryo Ui", "Microsoft YaHei", Arial, Helvetica, sans-serif !important;
+	font-family: "Helvetica Neue", "Microsoft YaHei", Arial, Helvetica, sans-serif !important;
 	background-color: #fff;
 	overflow-y: scroll;
 }
@@ -79,15 +79,18 @@ pre, code {
 	.top.menu .menu {
 		z-index: 900;
 	}
+	.icon,
+	.octicon {
+		margin-right: 5px !important;
+	}
 	.head.link.item {
 		padding-right: 0 !important;
-		.dropdown.icon,
-		.menu .octicon {
-			margin-right: 5px;
-		}
 	}
 	.avatar > .ui.image {
 		margin-right: 0;
+	}
+	.avatar .octicon-triangle-down {
+		margin-top: 6.5px;
 	}
 	.searchbox {
 		background-color: rgb(244, 244, 244) !important;
@@ -375,14 +378,6 @@ footer {
 	.generate-img(@n, (@i + 1));
 }
 
-// ensure Semantic UI .icon font family and 14px size does not apply to .icon.octicon
-.octicon.icon,
-.mega-octicon.icon {
-	font-family: octicons;
-	font-size: 16px;
-	opacity: 1 !important;
-}
-
 // Accessibility
 .sr-only {
 	position: absolute;
@@ -414,51 +409,4 @@ footer {
 .hljs {
 	background: inherit !important;
 	padding: 0 !important;
-}
-.following.bar.light{
-	background-color: #34495E;
-}
-.following.bar .brand .ui.mini.image{
-	width: 110px;
-}
-
-.following.bar .top.menu a.item, .ui.menu .item{
-	color: #fff;
-}
-
-.following.bar .top.menu a.item:hover, .ui.secondary.menu .active.item{
-	color: #fff;
-	background-color: rgb(39, 58, 76);
-}
-
-.ui.menu .item{
-	color: #C3C3C3;
-}
-.ui.secondary.menu .dropdown.item:hover, .ui.secondary.menu .link.item:hover, .ui.secondary.menu a.item:hover{
-	color: #fff;
-}
-
-.home{
-	padding-top: 60px;
-}
-
-.home .hero .octicon{
-	color: #34495E!important;
-}
-
-.home a{
-	color: #8AB10B!important;
-}
-
-.ui.blue.button, .ui.blue.buttons .button{
-	background-color: #34495E;
-}
-
-.ui.blue.button:hover, .ui.blue.buttons .button:hover{
-	background-color: #223140;
-}
-
-.ui.attached.header .right .button{
-	padding: 6px 10px!important;
-	font-size: 16px;
 }
