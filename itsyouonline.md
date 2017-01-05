@@ -25,6 +25,17 @@ ENABLE_CAPTCHA         = false
 REQUIRE_SIGNIN_VIEW    = false
 ```
 
+## ItsYou.Online login user handling
+
+What happens when a user logs in with ItsYou.Online for the first time:
+
+1. The username doesn't exist yet. A new user is made and the user can only log in
+through his ItsYou.Online account.
+2. The username already exists. The system will not make a new user, and give the
+ItsYou.Online user access to the user stored in the system with the matchin username.
+If someone has a 'regular' account, and doesn't have a matching ItsYou.Online account,
+an attacker could possibly make an ItsYou.Online account with said username, and
+assume control of the 'regular' account.
 
 
 ## To extend locales of the application
