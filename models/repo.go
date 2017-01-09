@@ -1510,12 +1510,25 @@ func SearchRepositoryByName(opts *SearchRepoOptions) (repos []*Repository, _ int
 	repos = make([]*Repository, 0, opts.PageSize)
 
 	// Append conditions
-	sess := x.Where("LOWER(lower_name) LIKE ?", "%"+opts.Keyword+"%")
-	if opts.OwnerID > 0 {
-		sess.And("owner_id = ?", opts.OwnerID)
-	}
-	if !opts.Private {
-		sess.And("is_private=?", false)
+	var sess *xorm.Session
+	sess = x.Select("*")
+	if opts.Keyword == "." {
+		if opts.OwnerID > 0 {
+			sess = x.Where("owner_id = ?", opts.OwnerID)
+		}else{
+			if !opts.Private {
+				sess.Where("is_private=?", false)
+			}
+		}
+	}else{
+		opts.Keyword = strings.ToLower(opts.Keyword)
+		sess = x.Where("LOWER(lower_name) LIKE ?", "%"+opts.Keyword+"%")
+		if opts.OwnerID > 0 {
+			sess.And("owner_id = ?", opts.OwnerID)
+		}
+		if !opts.Private {
+			sess.And("is_private=?", false)
+		}
 	}
 
 	var countSess xorm.Session
