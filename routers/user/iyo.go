@@ -2,7 +2,6 @@ package user
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -17,11 +16,10 @@ import (
 
 func OAuthAuthorize(ctx *context.Context) {
 
-	fmt.Println(setting.OAuthCfg)
 	cnf := &oauth2.Config{
 		ClientID:     setting.OAuthCfg.ClientID,
 		ClientSecret: setting.OAuthCfg.ClientSecret,
-		RedirectURL:  setting.OAuthCfg.RedirectURL,
+		RedirectURL:  extractRedirectUrl(ctx),
 		Scopes:       []string{setting.OAuthCfg.Scope},
 		Endpoint: oauth2.Endpoint{
 			AuthURL:  setting.OAuthCfg.AuthURL,
@@ -42,7 +40,7 @@ func OAuthRedirect(ctx *context.Context) {
 	v := url.Values{}
 	v.Add("client_id", setting.OAuthCfg.ClientID)
 	v.Add("client_secret", setting.OAuthCfg.ClientSecret)
-	v.Add("redirect_uri", setting.OAuthCfg.RedirectURL)
+	v.Add("redirect_uri", extractRedirectUrl(ctx))
 	v.Add("code", code)
 	v.Add("state", ctx.Session.Get("state").(string))
 
@@ -123,4 +121,17 @@ func OAuthRedirect(ctx *context.Context) {
 
 	}
 
+}
+
+func extractRedirectUrl(ctx *context.Context) string {
+	url := ctx.Context.Req.Request.URL
+	redirectUrl := url.Scheme
+	// use http:// scheme if there isn't one, usefull for dev...
+	if len(redirectUrl) == 0 {
+		redirectUrl = "http://"
+	}
+	redirectUrl += ctx.Context.Req.Request.Host
+	redirectUrl += "/oauth/redirect"
+
+	return redirectUrl
 }

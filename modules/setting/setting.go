@@ -165,7 +165,6 @@ var (
 	OAuthCfg struct {
 		ClientID     string `ini:"CLIENT_ID"`
 		ClientSecret string `ini:"CLIENT_SECRET"`
-		RedirectURL  string `ini:"REDIRECT_URL"`
 		AuthURL      string `ini:"AUTH_URL"`
 		TokenURL     string `ini:"TOKEN_URL"`
 		Scope        string `ini:"SCOPE"`
