@@ -121,6 +121,15 @@ func OAuthRedirect(ctx *context.Context) {
 
 	}
 
+	// Now that the user is logged add the organizations
+	orgs := make([]string, 0)
+	scopes := strings.Split(data.Scope, ",")
+	for _, scope := range scopes {
+		if strings.HasPrefix(scope, "user:memberof:") {
+			orgs = append(orgs, strings.TrimPrefix(scope, "user:memberof:"))
+		}
+	}
+	ctx.Session.Set("organizations", orgs)
 }
 
 func extractRedirectUrl(ctx *context.Context) string {

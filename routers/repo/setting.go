@@ -303,6 +303,13 @@ func Collaboration(ctx *context.Context) {
 	}
 	ctx.Data["Collaborators"] = users
 
+	orgs, err := ctx.Repo.Repository.GetIyoCollaborators()
+	if err != nil {
+		ctx.Handle(500, "GetIyoCollaborators", err)
+		return
+	}
+	ctx.Data["IyoOrganizations"] = orgs
+
 	ctx.HTML(200, COLLABORATION)
 }
 

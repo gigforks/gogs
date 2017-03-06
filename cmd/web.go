@@ -429,6 +429,11 @@ func runWeb(ctx *cli.Context) error {
 				m.Combo("").Get(repo.Collaboration).Post(repo.CollaborationPost)
 				m.Post("/access_mode", repo.ChangeCollaborationAccessMode)
 				m.Post("/delete", repo.DeleteCollaboration)
+				m.Group("/org", func() {
+					m.Post("", repo.CollaborationOrgPost)
+					m.Post("/access_mode", repo.ChangeIyoCollaborationAccessMode)
+					m.Post("/delete", repo.DeleteIyoCollaboration)
+				})
 			})
 
 			m.Group("/hooks", func() {
@@ -617,7 +622,6 @@ func runWeb(ctx *cli.Context) error {
 
 	m.Group("/api", func() {
 		apiv1.RegisterRoutes(m)
-		apiv1.RegisterExtendedRoutes(m)
 	}, ignSignIn)
 
 	// robots.txt

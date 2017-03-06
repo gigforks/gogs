@@ -1,6 +1,8 @@
 package repo
 
 import (
+	"strings"
+
 	api "github.com/gogits/go-gogs-client"
 
 	"github.com/gogits/gogs/models"
@@ -22,4 +24,27 @@ func DeleteCollaborator(ctx *context.APIContext, form api.AddCollaboratorOption)
 		ctx.Status(204)
 	}
 
+}
+
+// SearchOrgs returns Itsyou.Online organization names based on the scopes from the users
+// access token
+func SearchOrgs(ctx *context.APIContext) {
+	q := ctx.Query("q")
+	userOrgs := ctx.Session.Get("organizations").([]string)
+
+	type OrgName struct {
+		Name string
+	}
+
+	resp := make([]*OrgName, 0)
+	for _, org := range userOrgs {
+		if strings.HasPrefix(org, q) {
+			resp = append(resp, &OrgName{Name: org})
+		}
+	}
+
+	ctx.JSON(200, map[string]interface{}{
+		"ok":   true,
+		"data": resp,
+	})
 }

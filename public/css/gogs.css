@@ -2957,3 +2957,6 @@ body {
 .ui.blue.buttons .button:hover {
   background-color: #7fc72e;
 }
+.ui.segment.results {
+  z-index: 1;
+}

@@ -9,21 +9,23 @@ import (
 	macaron "gopkg.in/macaron.v1"
 )
 
-func RegisterExtendedRoutes(m *macaron.Macaron) {
+func registerExtendedRoutes(m *macaron.Macaron) {
 	bind := binding.Bind
-	m.Group("v1", func() {
-		m.Group("/users", func() {
-			m.Get("", user.ListAllUsers)
-		})
 
-		m.Post("/user/org", reqToken(), bind(api.CreateOrgOption{}), user.AddMyUserToOrganization)
-		m.Post("/users/:username/org", reqToken(), bind(api.CreateOrgOption{}), user.AddUserToOrganization)
-		m.Delete("/user/org", reqToken(), bind(api.CreateOrgOption{}), user.DeleteMyUserFromOrganization)
-		m.Delete("/users/:username/org", reqToken(), bind(api.CreateOrgOption{}), user.DeleteUserFromOrganization)
-
-		m.Delete("/collaborators/:collaborator", bind(api.AddCollaboratorOption{}), repo.DeleteCollaborator)
-
-		m.Get("/orgs/", reqToken(), org.ListAllOrgs)
-		m.Post("/orgs", reqToken(), bind(api.CreateOrgOption{}), org.CreateOrganization)
+	m.Group("/users", func() {
+		m.Get("", user.ListAllUsers)
 	})
+
+	m.Post("/user/org", reqToken(), bind(api.CreateOrgOption{}), user.AddMyUserToOrganization)
+	m.Post("/users/:username/org", reqToken(), bind(api.CreateOrgOption{}), user.AddUserToOrganization)
+	m.Delete("/user/org", reqToken(), bind(api.CreateOrgOption{}), user.DeleteMyUserFromOrganization)
+	m.Delete("/users/:username/org", reqToken(), bind(api.CreateOrgOption{}), user.DeleteUserFromOrganization)
+
+	m.Delete("/collaborators/:collaborator", bind(api.AddCollaboratorOption{}), repo.DeleteCollaborator)
+
+	m.Get("/orgs/", reqToken(), org.ListAllOrgs)
+	m.Post("/orgs", reqToken(), bind(api.CreateOrgOption{}), org.CreateOrganization)
+
+	m.Get("/orgs/search", repo.SearchOrgs)
+
 }

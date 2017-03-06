@@ -52,6 +52,49 @@
 						<button class="ui green button">{{.i18n.Tr "repo.settings.add_collaborator"}}</button>
 					</form>
 				</div>
+				<h4 class="ui top attached header">
+					{{.i18n.Tr "repo.settings.iyocollaborationorgs"}}
+				</h4>
+				<div class="ui attached segment collaborator list">
+					{{range .IyoOrganizations}}
+						<div class="item ui grid">
+							<div class="ui five wide column">
+									{{.OrganizationGlobalId}}
+							</div>
+							<div class="ui eight wide column">
+								<span class="octicon octicon-shield"></span>
+								<div class="ui inline dropdown">
+								  <div class="text">{{$.i18n.Tr .IyoCollaboration.ModeI18nKey}}</div>
+								  <i class="dropdown icon"></i>
+								  <div class="access-mode menu" data-url="{{$.Link}}/org/access_mode" data-uid="{{.IyoCollaboration.OrganizationGlobalId}}">
+								    <div class="item" data-text="{{$.i18n.Tr "repo.settings.collaboration.admin"}}" data-value="3">{{$.i18n.Tr "repo.settings.collaboration.admin"}}</div>
+								    <div class="item" data-text="{{$.i18n.Tr "repo.settings.collaboration.write"}}" data-value="2">{{$.i18n.Tr "repo.settings.collaboration.write"}}</div>
+								    <div class="item" data-text="{{$.i18n.Tr "repo.settings.collaboration.read"}}" data-value="1">{{$.i18n.Tr "repo.settings.collaboration.read"}}</div>
+								  </div>
+								</div>
+							</div>
+							<div class="ui two wide column">
+								<button class="ui red tiny button inline text-thin delete-button" data-url="{{$.Link}}/org/delete" data-id="{{.IyoCollaboration.OrganizationGlobalId}}">
+									{{$.i18n.Tr "repo.settings.delete_collaborator"}}
+								</button>
+							</div>
+						</div>
+					{{end}}
+				</div>
+				<div class="ui bottom attached segment">
+					<form class="ui form" id="repo-collab-form" action="{{$.Link}}/org" method="post">
+						{{.CsrfTokenHtml}}
+						<div class="inline field ui left">
+							<div id="search-org-box">
+								<div class="ui input">
+									<input class="prompt" name="organization" placeholder="{{.i18n.Tr "repo.settings.search_org_placeholder"}}" autocomplete="off" autofocus required>
+								</div>
+								<div class="ui segment results hide"></div>
+							</div>
+						</div>
+						<button class="ui green button">{{.i18n.Tr "repo.settings.add_organization_collaborator"}}</button>
+					</form>
+				</div>
 			</div>
 		</div>
 	</div>
