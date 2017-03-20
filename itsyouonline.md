@@ -7,7 +7,7 @@ CLIENT_ID     = YOUR CLIENT ID GOES HERE. (organization name)
 CLIENT_SECRET = YOUR CLIENT SECRET.
 AUTH_URL      = https://itsyou.online/v1/oauth/authorize
 TOKEN_URL     = https://itsyou.online/v1/oauth/access_token
-SCOPE        = user:email
+SCOPE        = user:email,user:memberof:[CLIENT_ID]
 
 ```
 
